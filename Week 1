@@ -48,3 +48,117 @@ public:
         
     }
 };
+
+#Two city scheduling
+class Solution {
+    static bool comparator(vector<int>& a,vector<int>& b)
+    {
+        return a[1]-a[0] > b[1]-b[0];
+    }
+public:
+    int twoCitySchedCost(vector<vector<int>>& costs) {
+        
+        int n = costs.size();
+        sort(costs.begin(),costs.end(),comparator);
+        int ans = 0;
+        for(int i=0;i<n;++i)
+            ans += i>=n/2?costs[i][1]:costs[i][0];
+        
+        return ans;
+    }
+};
+
+
+#Reverse String
+
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+        reverse(s.begin(),s.end());
+        
+    }
+};
+
+
+#Random Pick with Weight
+class Solution:
+
+    def __init__(self, w: List[int]):
+        self.prefix_sum = []
+        prefix_sum = 0
+        for weight in w:
+            prefix_sum += weight
+            self.prefix_sum.append(prefix_sum)
+        self.total_sum = prefix_sum
+        
+
+    def pickIndex(self) -> int:
+        random_num = self.total_sum * random.random()
+        low, high = 0, len(self.prefix_sum)
+        while low < high:
+            mid = low + (high - low) // 2
+            if random_num > self.prefix_sum[mid]:
+                low = mid + 1
+            else:
+                high = mid
+        return low
+        
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()
+
+#Queue Reconstruction by Height
+
+class Solution {
+    static bool comparator(vector<int>& a,vector<int>& b)
+    {
+        if(a[0]==b[0])
+            return a[1]<b[1];
+        
+        return a[0]<b[0];
+    }
+public:
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        cout.tie(NULL);
+        
+        int n=people.size();
+        sort(people.begin(),people.end(),comparator);
+        
+        //Put elements at correct position
+        vector<vector<int>> ans(n,vector<int>(2,-1));
+        
+        for(int i=0;i<n;++i)
+        {
+            int count = people[i][1];
+            for(int j=0;j<n;++j)
+            {
+                if(ans[j][0]==-1 && count==0)
+                {
+                    ans[j][0] = people[i][0];
+                    ans[j][1] = people[i][1];
+                    break;
+                }
+                else if(ans[j][0]==-1 || ans[j][0]>=people[i][0])
+                    count-=1;
+            }
+        }
+        return ans;
+    }
+};
+
+#Coin Change 2
+
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        dp = [0] * (amount + 1)
+        dp[0] = 1
+        
+        for i in coins:
+            for j in range(i, amount + 1):
+                dp[j] += dp[j - i]
+        return dp[amount]
+        
